@@ -258,6 +258,7 @@ Accuracy ≈ 96.2%, Brier score = 0.0556.
 
 
 ```
+- Where * is your run name
 
 ## Getting Started
 
@@ -318,6 +319,8 @@ All outputs are saved next to the script, prefixed with `RUN_NAME`:
 | `*_plot_6_test_fit.png` | Predicted vs true and error histograms |
 | `*_plot_7_mc_calibration.png` | Interval coverage and uncertainty ratio |
 | `*_plot_8_grade_confusion.png` | Health-grade confusion matrix |
+
+- Where * is your run name
 
 ## Future Work
 
