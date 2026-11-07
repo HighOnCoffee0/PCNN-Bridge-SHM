@@ -21,16 +21,6 @@ Generates, for ANY input CSV (all rows & columns, auto-detected):
   9. Categorical column analysis (cardinality, top categories, bar charts)
  10. A consolidated text/markdown SUMMARY REPORT tying everything together
 
-USAGE
------
-    python eda_report.py /path/to/your_file.csv [output_dir]
-
-If output_dir is omitted, a folder named "eda_output" is created next to
-this script.
-
-All plots are saved as PNG files (300 dpi) in <output_dir>/plots/.
-All tables are saved as CSV files in <output_dir>/tables/.
-A single readable report is saved as <output_dir>/EDA_SUMMARY_REPORT.md
 ================================================================================
 """
 
@@ -75,8 +65,8 @@ TSNE_SLOW_WARNING_THRESHOLD = 20000
 # Set these to run the script without any command-line arguments, e.g. from
 # an IDE's "Run" button, a notebook, or a scheduled job.
 # Leave INPUT_CSV_PATH as None to keep using the command-line argument instead.
-INPUT_CSV_PATH = r"C:\Users\sriha\Desktop\College\Project\Maths_P\Final EDA\train_for_eda.csv"  # <-- change this to your CSV path
-OUTPUT_DIR = r"C:\Users\sriha\Desktop\College\Project\Maths_P\Final EDA"               # <-- change this to your desired output folder
+INPUT_CSV_PATH = r" "  # <-- change this to your CSV path
+OUTPUT_DIR = r" "               # <-- change this to your desired output folder
 
 
 # ============================================================================
