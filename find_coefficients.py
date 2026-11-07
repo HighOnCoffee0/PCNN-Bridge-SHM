@@ -3,15 +3,11 @@ import numpy as np
 import json
 from sklearn.linear_model import LinearRegression
 
-# ============================================================
-# 0. LOAD TRAINING DATA (real units — NOT the _norm columns)
-# ============================================================
+# LOAD TRAINING DATA (real units — NOT the _norm columns)
 csv_folder = r" " # Use (/data)
 train = pd.read_csv(f"{csv_folder}\\train.csv")
 
-# ============================================================
-# 1. EQUATION 1 — Cable Tension = k_hat * Load + b1_hat
-# ============================================================
+# EQUATION 1 — Cable Tension = k_hat * Load + b1_hat
 X_tension = train[['Vehicle_Load_tons']]
 y_tension = train['Cable_Member_Tension_kN']
 
@@ -25,9 +21,7 @@ print(f"Tension = {k_hat:.6f} * Load + {b1_hat:.6f}")
 print(f"R² = {r2_tension:.4f}")
 print()
 
-# ============================================================
-# 2. EQUATION 2 — Strain = c1_hat*Load + c2_hat*Load^2 + c3_hat*Vibration + b2_hat
-# ============================================================
+# EQUATION 2 — Strain = c1_hat*Load + c2_hat*Load^2 + c3_hat*Vibration + b2_hat
 train['Load_sq'] = train['Vehicle_Load_tons'] ** 2
 
 X_strain = train[['Vehicle_Load_tons', 'Load_sq', 'Vibration_ms2']]
@@ -43,17 +37,13 @@ print(f"Strain = {c1_hat:.6f}*Load + {c2_hat:.6f}*Load^2 + {c3_hat:.6f}*Vibratio
 print(f"R² = {r2_strain:.4f}")
 print()
 
-# ============================================================
-# 3. SANITY CHECK — compare against earlier findings in this project
-# ============================================================
+# SANITY CHECK — compare against earlier findings in this project
 print("=== Sanity check against earlier investigation ===")
 print(f"Tension R² expected ~0.96, got {r2_tension:.4f}  {'OK' if abs(r2_tension - 0.96) < 0.02 else 'CHECK THIS'}")
 print(f"Strain R² expected ~0.888, got {r2_strain:.4f}  {'OK' if abs(r2_strain - 0.888) < 0.02 else 'CHECK THIS'}")
 print()
 
-# ============================================================
-# 4. SAVE COEFFICIENTS — used later to initialize the PyTorch model
-# ============================================================
+# SAVE COEFFICIENTS — used later to initialize the PyTorch model
 coefficients = {
     "tension": {
         "k_hat": k_hat,
