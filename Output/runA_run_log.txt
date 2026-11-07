@@ -21,7 +21,7 @@ MC Dropout (50 passes) — mean prediction vs truth
 
 Graded health probabilities — accuracy 96.24% | Brier score 0.0556
   True grade counts: {'Poor': 882, 'Fair': 4795, 'Good': 1523}
-  Per-sample predictions saved to C:\Users\sriha\Desktop\College\Project\Maths_P\Run\Run 3\runA_test_predictions_mc.csv
+  Per-sample predictions saved to 
 
 Learned physics constants — k_hat=8.5654, b1_hat=323.1764, c1_hat=-1.0068, c2_hat=0.6405, c3_hat=118.3619, b2_hat=438.4437
 
