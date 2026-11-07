@@ -53,9 +53,6 @@ np.random.seed(SEED)
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using", DEVICE)
 
-# --------------------------------------------------------------------------- #
-# Paths
-# --------------------------------------------------------------------------- #
 DATA_DIR = r"" #Input your path here (/data)
 TRAIN_CSV = os.path.join(DATA_DIR, "train.csv")
 VAL_CSV = os.path.join(DATA_DIR, "val.csv")
@@ -89,23 +86,14 @@ class _Tee:
 sys.stdout = _Tee(sys.__stdout__, open(out_path("run_log.txt"), "w", encoding="utf-8"))
 print("Results will be saved to:", OUT_DIR, "| file prefix:", RUN_NAME + "_")
 
-# --------------------------------------------------------------------------- #
-# Feature configuration
-# --------------------------------------------------------------------------- #
 # Monte Carlo Dropout
 DROPOUT_P = 0.1
 MC_SAMPLES = 50
 
-# Number of training epochs. NOTE: the saved run log in your last upload was
-# produced with 50 epochs; the script you uploaded had 70. Keep this equal to
-# the number used for the results you report.
+# Number of training epochs. 
 EPOCHS = 70
 
-# Graded health: SHI cut-offs (ascending) -> grade index 0..2.
-# Three grades: Poor (SHI < 0.75), Fair (0.75 to < 0.85), Good (>= 0.85).
-# The earlier "Critical" (< 0.70) and "Poor" (0.70-0.75) grades were merged into
-# a single Poor grade because the test split has no Critical samples.
-# These are adjustable: edit the two lists below (one more label than edges).
+# Health Grades
 HEALTH_LABELS = ["Poor", "Fair", "Good"]
 HEALTH_EDGES = torch.tensor([0.75, 0.85])  # <0.75, 0.75-0.85, >=0.85
 N_GRADES = len(HEALTH_LABELS)
@@ -172,10 +160,8 @@ def shi_to_grade(shi_raw):
     """Raw SHI tensor -> integer grade index (0 = Poor, 1 = Fair, 2 = Good)."""
     return torch.bucketize(shi_raw.contiguous(), HEALTH_EDGES.to(shi_raw.device), right=True)
 
-
-# --------------------------------------------------------------------------- #
 # Data
-# --------------------------------------------------------------------------- #
+
 class BridgeDataset(Dataset):
     """If weighted=True (use for the train split only), builds per-sample loss
     weights from health-grade rarity and heavy-load events. Otherwise weights = 1."""
@@ -223,10 +209,7 @@ class BridgeDataset(Dataset):
     def __getitem__(self, idx):
         return self.x[idx], self.y_strain[idx], self.y_tension[idx], self.y_shi[idx], self.w[idx]
 
-
-# --------------------------------------------------------------------------- #
 # Model
-# --------------------------------------------------------------------------- #
 class DynamicBridgePCNN(nn.Module):
     def __init__(self, stats, physics_init, dropout=DROPOUT_P, loss_mode=LOSS_MODE):
         super().__init__()
@@ -300,10 +283,7 @@ class DynamicBridgePCNN(nn.Module):
             return total, {k: l.item() for k, l in zip(FIXED_LAMBDAS.keys(), losses)}
         return total
 
-
-# --------------------------------------------------------------------------- #
 # Evaluation
-# --------------------------------------------------------------------------- #
 @torch.no_grad()
 def evaluate_rmse(model, loader):
     """Deterministic (dropout off) RMSE per head in physical units."""
@@ -408,10 +388,7 @@ def evaluate_uncertainty(model, dataset, n_samples=MC_SAMPLES, save_csv=None):
         "accuracy": acc, "brier": brier,
     }
 
-
-# --------------------------------------------------------------------------- #
 # Training
-# --------------------------------------------------------------------------- #
 PHYSICS_NAMES = ["k_hat", "b1_hat", "c1_hat", "c2_hat", "c3_hat", "b2_hat"]
 
 
@@ -477,15 +454,13 @@ def train_pcnn(train_csv, val_csv, epochs=EPOCHS, batch_size=128, lr=3e-3, grad_
           f"this is the model used for the test results below.")
     return model, pd.DataFrame(history), best_epoch, best_val
 
-
-# --------------------------------------------------------------------------- #
 # Graphs of how training went (saved as PNG beside the script)
-# --------------------------------------------------------------------------- #
-HEADS = [  # (key, display name, unit used on axis labels, colour)
+# (key, display name, unit used on axis labels, colour)
+HEADS = [  
     ("strain", "Strain", "µε", "tab:blue"),
     ("tension", "Cable tension", "kN", "tab:orange"),
     ("shi", "SHI", "SHI units", "tab:green"),
-]
+]                                                   
 
 
 def _lower(name):
