@@ -1,7 +1,6 @@
 """
-================================================================================
  COMPREHENSIVE EXPLORATORY DATA ANALYSIS (EDA) SCRIPT
-================================================================================
+ 
 Generates, for ANY input CSV (all rows & columns, auto-detected):
 
   1. Dataset overview (shape, dtypes, memory, duplicates, missing values)
@@ -46,10 +45,8 @@ plt.rcParams["savefig.dpi"] = 300
 plt.rcParams["axes.titlesize"] = 12
 plt.rcParams["axes.titleweight"] = "bold"
 
-
-# ============================================================================
 # CONFIG
-# ============================================================================
+
 # Max unique values for a numeric-looking or object column to be treated
 # as categorical for coloring / grouping purposes.
 MAX_CATEGORY_CARDINALITY = 3
@@ -59,19 +56,12 @@ MAX_CATEGORY_CARDINALITY = 3
 # be slow on very large datasets.
 TSNE_SLOW_WARNING_THRESHOLD = 20000
 
-# --------------------------------------------------------------------------
-# HARDCODED INPUT / OUTPUT PATHS
-# --------------------------------------------------------------------------
-# Set these to run the script without any command-line arguments, e.g. from
-# an IDE's "Run" button, a notebook, or a scheduled job.
 # Leave INPUT_CSV_PATH as None to keep using the command-line argument instead.
 INPUT_CSV_PATH = r" "  # <-- change this to your CSV path
 OUTPUT_DIR = r" "               # <-- change this to your desired output folder
 
 
-# ============================================================================
 # UTILITIES
-# ============================================================================
 def make_dirs(output_dir):
     plots_dir = os.path.join(output_dir, "plots")
     tables_dir = os.path.join(output_dir, "tables")
@@ -123,9 +113,7 @@ def detect_column_types(df):
     return numeric_cols, datetime_cols, categorical_cols, text_cols
 
 
-# ============================================================================
-# 1. DATASET OVERVIEW
-# ============================================================================
+# DATASET OVERVIEW
 def dataset_overview(df, tables_dir):
     n_rows, n_cols = df.shape
     mem_mb = df.memory_usage(deep=True).sum() / (1024 ** 2)
@@ -153,9 +141,7 @@ def dataset_overview(df, tables_dir):
     return overview, missing_table
 
 
-# ============================================================================
-# 2. DESCRIPTIVE STATISTICS
-# ============================================================================
+# DESCRIPTIVE STATISTICS
 def descriptive_stats(df, numeric_cols, categorical_cols, tables_dir):
     if numeric_cols:
         num_desc = df[numeric_cols].describe().T
@@ -181,10 +167,7 @@ def descriptive_stats(df, numeric_cols, categorical_cols, tables_dir):
 
     return num_desc, cat_desc
 
-
-# ============================================================================
-# 3. CORRELATION HEATMAP
-# ============================================================================
+# CORRELATION HEATMAP
 def plot_correlation_heatmap(df, numeric_cols, plots_dir, tables_dir):
     if len(numeric_cols) < 2:
         return None
@@ -219,10 +202,7 @@ def plot_correlation_heatmap(df, numeric_cols, plots_dir, tables_dir):
 
     return path, corr_pairs
 
-
-# ============================================================================
-# 4. SKEWNESS & KURTOSIS
-# ============================================================================
+# SKEWNESS & KURTOSIS
 def interpret_skew(s):
     if pd.isna(s):
         return "N/A"
@@ -266,10 +246,7 @@ def compute_skew_kurtosis(df, numeric_cols, tables_dir):
         result.to_csv(os.path.join(tables_dir, "skewness_kurtosis.csv"), index=False)
     return result
 
-
-# ============================================================================
-# 5. DISTRIBUTION HISTOGRAMS
-# ============================================================================
+# DISTRIBUTION HISTOGRAMS
 def plot_distributions(df, numeric_cols, plots_dir):
     if not numeric_cols:
         return None
@@ -299,10 +276,7 @@ def plot_distributions(df, numeric_cols, plots_dir):
     plt.close()
     return path
 
-
-# ============================================================================
-# 6. BOXPLOTS + IQR-BASED OUTLIER DETECTION
-# ============================================================================
+# BOXPLOTS + IQR-BASED OUTLIER DETECTION
 def iqr_outlier_bounds(series):
     q1 = series.quantile(0.25)
     q3 = series.quantile(0.75)
@@ -368,9 +342,7 @@ def plot_boxplots_and_outliers(df, numeric_cols, plots_dir, tables_dir):
     return path, outlier_summary, outlier_detail
 
 
-# ============================================================================
-# 7. t-SNE 2D PROJECTION
-# ============================================================================
+# t-SNE 2D PROJECTION (May take longer to generate skip this if no needed or takes too long)
 def plot_tsne(df, numeric_cols, categorical_cols, plots_dir):
     if len(numeric_cols) < 2:
         return None, "Skipped: fewer than 2 numeric columns available."
@@ -417,10 +389,7 @@ def plot_tsne(df, numeric_cols, categorical_cols, plots_dir):
     plt.close()
     return path, note
 
-
-# ============================================================================
-# 8. TIME-SERIES ANALYSIS (auto-detected datetime columns)
-# ============================================================================
+# TIME-SERIES ANALYSIS (auto-detected datetime columns)
 def time_series_analysis(df, numeric_cols, datetime_cols, plots_dir, tables_dir):
     if not datetime_cols or not numeric_cols:
         return [], pd.DataFrame()
@@ -433,7 +402,7 @@ def time_series_analysis(df, numeric_cols, datetime_cols, plots_dir, tables_dir)
         if ts_df.empty:
             continue
 
-        # --- Trend + rolling mean plot ---
+        # Trend + rolling mean plot
         n = len(numeric_cols)
         ncols = 2
         nrows = int(np.ceil(n / ncols))
@@ -460,7 +429,7 @@ def time_series_analysis(df, numeric_cols, datetime_cols, plots_dir, tables_dir)
         plt.close()
         outputs.append(trend_path)
 
-        # --- Seasonality: month & day-of-week boxplots ---
+        # Seasonality: month & day-of-week boxplots
         ts_df = ts_df.copy()
         ts_df["_month"] = ts_df[dcol].dt.month_name().str[:3]
         ts_df["_dow"] = ts_df[dcol].dt.day_name().str[:3]
@@ -482,7 +451,7 @@ def time_series_analysis(df, numeric_cols, datetime_cols, plots_dir, tables_dir)
         plt.close()
         outputs.append(season_path)
 
-        # --- Skewness / kurtosis BY time period (year-month) for each numeric col ---
+        # Skewness / kurtosis BY time period (year-month) for each numeric col
         ts_df["_period"] = ts_df[dcol].dt.to_period("M").astype(str)
         for col in numeric_cols:
             grouped = ts_df.groupby("_period")[col]
@@ -501,7 +470,7 @@ def time_series_analysis(df, numeric_cols, datetime_cols, plots_dir, tables_dir)
                     "excess_kurtosis": round(stats.kurtosis(vals), 4),
                 })
 
-        # --- Basic time-index diagnostics ---
+        # Basic time-index diagnostics
         date_range_days = (ts_df[dcol].max() - ts_df[dcol].min()).days
         inferred_freq = pd.infer_freq(ts_df[dcol].drop_duplicates().sort_values())
         gap_info = {
@@ -522,10 +491,7 @@ def time_series_analysis(df, numeric_cols, datetime_cols, plots_dir, tables_dir)
 
     return outputs, period_stats_df
 
-
-# ============================================================================
-# 9. CATEGORICAL COLUMN ANALYSIS
-# ============================================================================
+# CATEGORICAL COLUMN ANALYSIS
 def plot_categorical(df, categorical_cols, plots_dir):
     if not categorical_cols:
         return None
@@ -552,10 +518,7 @@ def plot_categorical(df, categorical_cols, plots_dir):
     plt.close()
     return path
 
-
-# ============================================================================
-# 10. SUMMARY REPORT
-# ============================================================================
+# SUMMARY REPORT
 def generate_report(output_dir, csv_path, overview, missing_table, num_desc, cat_desc,
                      corr_pairs, skew_kurt, outlier_summary, tsne_note,
                      datetime_cols, period_stats_df):
@@ -642,10 +605,7 @@ def generate_report(output_dir, csv_path, overview, missing_table, num_desc, cat
         f.write("\n".join(lines))
     return report_path
 
-
-# ============================================================================
 # MAIN
-# ============================================================================
 def run_eda(csv_path, output_dir="eda_output"):
     print(f"Loading data from: {csv_path}")
     df = load_data(csv_path)
