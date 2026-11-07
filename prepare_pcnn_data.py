@@ -2,22 +2,17 @@ import pandas as pd
 import numpy as np
 import json
 
-# ============================================================
-# 0. LOAD + PARSE
-# ============================================================
-input_file = r"C:\Users\sriha\Desktop\College\Project\Maths_P\CSV\Main_interpolated.csv"
+# LOAD + PARSE
+input_file = r" " # (use \data)
 df = pd.read_csv(input_file)
 df['Timestamp'] = pd.to_datetime(df['Timestamp'], format="%d-%m-%Y %H:%M")
 df = df.sort_values('Timestamp').reset_index(drop=True)
 
-# ============================================================
-# 1. CHRONOLOGICAL SPLIT — 20 / 5 / 5 days, by calendar day boundary
-#    (never shuffle time-series data before splitting)
-# ============================================================
+# CHRONOLOGICAL SPLIT — 20 / 5 / 5 days, by calendar day boundary
+
 start_date = df['Timestamp'].min().normalize()
 train_end   = start_date + pd.Timedelta(days=20)   # end of day 20 (exclusive)
 val_end     = start_date + pd.Timedelta(days=25)   # end of day 25 (exclusive)
-# remaining 5 days -> test
 
 train_df = df[df['Timestamp'] < train_end].reset_index(drop=True)
 val_df   = df[(df['Timestamp'] >= train_end) & (df['Timestamp'] < val_end)].reset_index(drop=True)
@@ -27,9 +22,8 @@ print(f"Train: {len(train_df)} rows  ({train_df['Timestamp'].min()} -> {train_df
 print(f"Val:   {len(val_df)} rows  ({val_df['Timestamp'].min()} -> {val_df['Timestamp'].max()})")
 print(f"Test:  {len(test_df)} rows  ({test_df['Timestamp'].min()} -> {test_df['Timestamp'].max()})")
 
-# ============================================================
 # 1b. ENCODE TIME — split into "slow drift" and "daily cycle"
-# ============================================================
+
 def add_time_features(split_df, reference_start):
     out = split_df.copy()
     # slow drift: elapsed time since the very start of TRAINING data
@@ -47,9 +41,8 @@ train_df = add_time_features(train_df, reference_start)
 val_df   = add_time_features(val_df, reference_start)
 test_df  = add_time_features(test_df, reference_start)
 
-# ============================================================
-# 2. FIT NORMALIZATION ON TRAIN ONLY (z-score / standard scaling)
-# ============================================================
+# FIT NORMALIZATION ON TRAIN ONLY (z-score / standard scaling)
+
 feature_cols = [
     'Vehicle_Load_tons', 'Temperature_C', 'Vibration_ms2',        # inputs
     'Strain_microstrain', 'Cable_Member_Tension_kN',              # outputs w/ physics residual
@@ -74,9 +67,8 @@ print("\nNormalization stats (fit on training set only):")
 for col, s in stats.items():
     print(f"  {col}: mean={s['mean']:.4f}, std={s['std']:.4f}")
 
-# ============================================================
-# 3. APPLY THE SAME TRANSFORM TO ALL THREE SPLITS
-# ============================================================
+# APPLY THE SAME TRANSFORM TO ALL THREE SPLITS
+
 def normalize(split_df, stats, cols):
     out = split_df.copy()
     for col in cols:
@@ -87,10 +79,9 @@ train_df = normalize(train_df, stats, feature_cols)
 val_df   = normalize(val_df, stats, feature_cols)
 test_df  = normalize(test_df, stats, feature_cols)
 
-# ============================================================
-# 4. SAVE SPLITS
-# ============================================================
-out_dir = r"C:\Users\sriha\Desktop\College\Project\Maths_P\CSV"
+# SAVE SPLITS
+
+out_dir = r" " # add output path here
 train_df.to_csv(f"{out_dir}\\train.csv", index=False)
 val_df.to_csv(f"{out_dir}\\val.csv", index=False)
 test_df.to_csv(f"{out_dir}\\test.csv", index=False)
