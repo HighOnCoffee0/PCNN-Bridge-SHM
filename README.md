@@ -231,7 +231,6 @@ Accuracy ≈ 96.2%, Brier score = 0.0556.
 ├── data/                          # (not tracked) raw and split CSVs
 ├── prepare_pcnn_data.py           # chronological split + normalization + time encoding
 ├── find_coefficients.py           # fits physics coefficients on train.csv -> physics_coefficients.json
-├── validate_preprocessed_data.py  # sanity checks on the preprocessed splits
 ├── prepare_eda_subset.py          # cleans a column subset for EDA
 ├── eda_reports.py                 # EDA script
 ├── train_pcnn.py                  # PCNN model, training, MC Dropout evaluation, plots
