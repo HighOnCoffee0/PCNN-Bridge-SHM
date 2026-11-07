@@ -230,6 +230,10 @@ Accuracy ≈ 96.2%, Brier score = 0.0556.
 .
 ├── data/                          # (not tracked) raw and split CSVs
 │   ├── Dataset.txt                # link to kaggle dataset
+├── docs/
+│   ├── PCNN_Findings_Report.docx  # full feature-investigation report
+│   ├── PCNN_Project_Summary.docx  # project summary
+│   └── EDA_SUMMARY_REPORT.md      # exploratory data analysis
 ├── README.md
 ├── eda_reports.py                 # EDA script
 ├── find_coefficients.py           # fits physics coefficients on train.csv -> physics_coefficients.json
@@ -237,10 +241,6 @@ Accuracy ≈ 96.2%, Brier score = 0.0556.
 ├── prepare_eda_subset.py          # cleans a column subset for EDA
 ├── prepare_pcnn_data.py           # chronological split + normalization + time encoding
 ├── train_pcnn.py                  # PCNN model, training, MC Dropout evaluation, plots
-└── docs/
-    ├── PCNN_Findings_Report.docx  # full feature-investigation report
-    ├── PCNN_Project_Summary.docx  # project summary
-    └── EDA_SUMMARY_REPORT.md      # exploratory data analysis
 
 
 ```
