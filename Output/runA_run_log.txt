@@ -1,0 +1,38 @@
+Results will be saved to: C:\Users\sriha\Desktop\College\Project\Maths_P\Run\Run 3 | file prefix: runA_
+Train health-grade counts: {'Poor': 3621, 'Fair': 18894, 'Good': 6285}
+Grade weights (before load term): {'Poor': 1.63, 'Fair': 0.71, 'Good': 1.24}
+Epoch 01/70 | Train Loss: 1.0191 | Val Score: 0.3924 | Val RMSE — Strain: 157.27, Tension: 21.92, SHI: 0.0193
+Epoch 10/70 | Train Loss: 0.2349 | Val Score: 0.2238 | Val RMSE — Strain: 111.42, Tension: 18.59, SHI: 0.0151
+Epoch 20/70 | Train Loss: 0.2123 | Val Score: 0.1988 | Val RMSE — Strain: 98.80, Tension: 18.65, SHI: 0.0147
+Epoch 30/70 | Train Loss: 0.2187 | Val Score: 0.1556 | Val RMSE — Strain: 78.45, Tension: 20.63, SHI: 0.0123
+Epoch 40/70 | Train Loss: 0.2189 | Val Score: 0.1623 | Val RMSE — Strain: 85.50, Tension: 20.87, SHI: 0.0119
+Epoch 50/70 | Train Loss: 0.2032 | Val Score: 0.1526 | Val RMSE — Strain: 74.48, Tension: 20.38, SHI: 0.0127
+Epoch 60/70 | Train Loss: 0.2078 | Val Score: 0.2187 | Val RMSE — Strain: 107.65, Tension: 19.63, SHI: 0.0148
+Epoch 70/70 | Train Loss: 0.2091 | Val Score: 0.1668 | Val RMSE — Strain: 75.53, Tension: 21.15, SHI: 0.0136
+
+Best checkpoint: epoch 54 (val score 0.1194); this is the model used for the test results below.
+
+Final Test RMSE (dropout off) — Strain: 47.87 microstrain, Tension: 16.55 kN, SHI: 0.0074
+
+MC Dropout (50 passes) — mean prediction vs truth
+  Strain   RMSE 47.5403 microstrain | mean pred. std 54.2012 | 95% interval coverage 92.9%
+  Tension  RMSE 16.6116 kN | mean pred. std 9.6210 | 95% interval coverage 69.3%
+  SHI      RMSE 0.0072  | mean pred. std 0.0083 | 95% interval coverage 93.8%
+
+Graded health probabilities — accuracy 96.24% | Brier score 0.0556
+  True grade counts: {'Poor': 882, 'Fair': 4795, 'Good': 1523}
+  Per-sample predictions saved to C:\Users\sriha\Desktop\College\Project\Maths_P\Run\Run 3\runA_test_predictions_mc.csv
+
+Learned physics constants — k_hat=8.5654, b1_hat=323.1764, c1_hat=-1.0068, c2_hat=0.6405, c3_hat=118.3619, b2_hat=438.4437
+
+Saving training graphs:
+  Saved graph: runA_plot_1_training_loss.png
+  Saved graph: runA_plot_2_loss_terms.png
+  Saved graph: runA_plot_3_validation_score.png
+  Saved graph: runA_plot_4_rmse_train_vs_val.png
+  Saved graph: runA_plot_5_physics_constants.png
+  Saved graph: runA_plot_6_test_fit.png
+  Saved graph: runA_plot_7_mc_calibration.png
+  Saved graph: runA_plot_8_grade_confusion.png
+
+Saved runA_metrics.json, runA_run_log.txt, runA_best_pcnn.pt, runA_training_history.csv and runA_test_predictions_mc.csv in C:\Users\sriha\Desktop\College\Project\Maths_P\Run\Run 3
