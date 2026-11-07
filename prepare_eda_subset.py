@@ -1,7 +1,7 @@
 import pandas as pd
 
-input_file = r"C:\Users\sriha\Desktop\College\Project\Maths_P\CSV\train.csv"
-output_file = r"C:\Users\sriha\Desktop\College\Project\Maths_P\Final EDA\train_for_eda.csv"
+input_file = r" " # Use(\data)
+output_file = r" " # Add (\train_for_eda.csv at the end at output location)
 
 df = pd.read_csv(input_file)
 
