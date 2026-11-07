@@ -13,12 +13,6 @@ Key features
           train split only, and
        b) per-term weights: learned (homoscedastic) or fixed lambdas.
 
-Other changes vs. previous version
-  - Test evaluation now uses test.csv (was train.csv).
-  - Best checkpoint is chosen on the *unweighted* validation error in
-    normalized units (sum of the 3 data MSEs), not on the learned-weight loss,
-    which can go negative and be inflated by exp(-log_var).
-
 Training-quality graphs (new)
   Every epoch is recorded (not only every 10th) and saved to
   <RUN_NAME>_training_history.csv. At the end of the run these PNG graphs are
@@ -62,7 +56,7 @@ print("Using", DEVICE)
 # --------------------------------------------------------------------------- #
 # Paths
 # --------------------------------------------------------------------------- #
-DATA_DIR = r"C:\Users\sriha\Desktop\College\Project\Maths_P\Run"
+DATA_DIR = r"" #Input your path here (/data)
 TRAIN_CSV = os.path.join(DATA_DIR, "train.csv")
 VAL_CSV = os.path.join(DATA_DIR, "val.csv")
 TEST_CSV = os.path.join(DATA_DIR, "test.csv")
