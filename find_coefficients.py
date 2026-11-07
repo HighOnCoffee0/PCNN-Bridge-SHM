@@ -6,7 +6,7 @@ from sklearn.linear_model import LinearRegression
 # ============================================================
 # 0. LOAD TRAINING DATA (real units — NOT the _norm columns)
 # ============================================================
-csv_folder = r"C:\Users\sriha\Desktop\College\Project\Maths_P\CSV"
+csv_folder = r" " # Use (/data)
 train = pd.read_csv(f"{csv_folder}\\train.csv")
 
 # ============================================================
