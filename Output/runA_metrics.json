@@ -1,0 +1,28 @@
+{
+  "run_name": "runA",
+  "loss_mode": "fixed",
+  "dropout": 0.1,
+  "fixed_lambdas": {
+    "data_strain": 1.0,
+    "data_tension": 1.0,
+    "data_shi": 1.0,
+    "phys_strain": 0.1,
+    "phys_tension": 0.1
+  },
+  "epochs": 70,
+  "best_epoch": 54,
+  "best_val_score": 0.11944981429982873,
+  "test_rmse": {
+    "strain": 47.87112981165625,
+    "tension": 16.5532029478295,
+    "shi": 0.007410816694588828
+  },
+  "physics_constants": {
+    "k_hat": 8.565378189086914,
+    "b1_hat": 323.1764221191406,
+    "c1_hat": -1.0068033933639526,
+    "c2_hat": 0.6404575705528259,
+    "c3_hat": 118.36188507080078,
+    "b2_hat": 438.4436950683594
+  }
+}
