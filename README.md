@@ -322,15 +322,6 @@ All outputs are saved next to the script, prefixed with `RUN_NAME`:
 
 - Where * is your run name
 
-## Future Work
-
-- Add Modal Frequency back with a stronger physical grounding, and derive Stiffness.
-- Forecasting heads (SHI at 24 h / 7 d / 30 d ahead, probability of failure).
-- Evaluate on a split that contains extreme-load events, or on real bridge data.
-- Calibrate the MC Dropout intervals (especially for tension).
-- Add an SHI consistency check against the reconstructed formula as a post-training report.
-- Look into explainable AI techniques
-
 ## Acknowledgements
 
 - Synthetic Bridge SHM Digital Twin dataset from Kaggle.
